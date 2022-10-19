@@ -1,4 +1,5 @@
 import 'package:chat_tlens_bot/Theme/app_theme.dart';
+import 'package:chat_tlens_bot/models/models.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -9,7 +10,24 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  _chatBubble() {
+  final List<Message> messages = [];
+  late String message;
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  _chatBubble(String msg) {
     return Column(
       children: [
         Container(
@@ -22,9 +40,9 @@ class _ChatScreenState extends State<ChatScreen> {
               color: AppTheme.secondary,
               borderRadius: BorderRadius.circular(15),
             ),
-            child: const Text(
-              'testo prueba sdkfjnddsnklsjfnkjdsfnv jdsknfdjkdnsf ',
-              style: TextStyle(color: AppTheme.textPrimary, fontSize: 16),
+            child: Text(
+              msg,
+              style: const TextStyle(color: AppTheme.textPrimary, fontSize: 16),
             ),
           ),
         ),
@@ -39,14 +57,20 @@ class _ChatScreenState extends State<ChatScreen> {
       color: Colors.white,
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
               child: TextField(
-            style: TextStyle(fontWeight: FontWeight.w300),
-            decoration: InputDecoration.collapsed(hintText: 'Escribe...'),
+            controller: _controller,
+            style: const TextStyle(fontWeight: FontWeight.w300),
+            decoration: const InputDecoration.collapsed(hintText: 'Escribe...'),
             textCapitalization: TextCapitalization.sentences,
           )),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              message = _controller.text;
+              messages.add(Message(msg: message));
+              _controller.clear();
+              setState(() {});
+            },
             icon: const Icon(Icons.send),
             iconSize: 25,
           )
@@ -64,9 +88,9 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(15),
-                itemCount: 1,
+                itemCount: messages.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _chatBubble();
+                  return _chatBubble(messages[index].msg);
                 },
               ),
             ),

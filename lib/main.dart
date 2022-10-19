@@ -1,5 +1,6 @@
 import 'package:chat_tlens_bot/Theme/app_theme.dart';
 import 'package:chat_tlens_bot/screens/screens.dart';
+import 'package:chat_tlens_bot/router/routes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'T-lenS',
       theme: AppTheme.ligthTheme,
-      home: const HomeScreen(),
+      routes: AppRoutes.getAppRoutes(),
+      initialRoute: AppRoutes.initialRoute,
+      onGenerateRoute: AppRoutes.onGenerateRoute,
     );
   }
 }
